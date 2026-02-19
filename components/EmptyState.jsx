@@ -3,12 +3,48 @@ import React from 'react';
 export default function EmptyState({ onAddLocation }) {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900">
-      {/* Weather Icon Animation */}
-      <div className="mb-8 relative">
-        <div className="weather-icon-container">
-          <span className="text-8xl block animate-bounce-slow">⛅</span>
-          <div className="absolute -top-4 -right-4 text-5xl animate-spin-slow">☀️</div>
-          <div className="absolute -bottom-2 -left-4 text-4xl animate-float">🌧️</div>
+      {/* Weather Conditions Showcase */}
+      <div className="mb-12 w-full max-w-5xl px-4 animate-fade-in">
+        <div className="grid grid-cols-3 md:grid-cols-6 gap-3 md:gap-4">
+          <WeatherPreview
+            icon="☀️"
+            label="Sunny"
+            gradient="from-sky-400 to-blue-500"
+            delay="0s"
+          />
+          <WeatherPreview
+            icon="⛅"
+            label="Partly Cloudy"
+            gradient="from-blue-400 to-slate-400"
+            delay="0.1s"
+          />
+          <WeatherPreview
+            icon="☁️"
+            label="Cloudy"
+            gradient="from-slate-400 to-slate-600"
+            delay="0.2s"
+          />
+          <WeatherPreview
+            icon="🌧️"
+            label="Rainy"
+            gradient="from-slate-600 to-slate-800"
+            delay="0.3s"
+            effect="rain"
+          />
+          <WeatherPreview
+            icon="⛈️"
+            label="Storm"
+            gradient="from-slate-800 to-slate-900"
+            delay="0.4s"
+            effect="lightning"
+          />
+          <WeatherPreview
+            icon="❄️"
+            label="Snowy"
+            gradient="from-slate-300 to-slate-500"
+            delay="0.5s"
+            effect="snow"
+          />
         </div>
       </div>
 
@@ -63,28 +99,14 @@ export default function EmptyState({ onAddLocation }) {
       </div>
 
       <style jsx>{`
-        @keyframes bounce-slow {
-          0%, 100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-20px);
-          }
-        }
-        @keyframes spin-slow {
+        @keyframes fade-in {
           from {
-            transform: rotate(0deg);
+            opacity: 0;
+            transform: translateY(20px);
           }
           to {
-            transform: rotate(360deg);
-          }
-        }
-        @keyframes float {
-          0%, 100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-15px);
+            opacity: 1;
+            transform: translateY(0);
           }
         }
         @keyframes shine {
@@ -95,27 +117,106 @@ export default function EmptyState({ onAddLocation }) {
             transform: translateX(100%);
           }
         }
-        .animate-bounce-slow {
-          animation: bounce-slow 3s ease-in-out infinite;
+        @keyframes fall-mini {
+          to {
+            transform: translateY(100px);
+            opacity: 0;
+          }
         }
-        .animate-spin-slow {
-          animation: spin-slow 8s linear infinite;
+        @keyframes fall-snow-mini {
+          0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(60px) rotate(360deg);
+            opacity: 0;
+          }
         }
-        .animate-float {
-          animation: float 2s ease-in-out infinite;
+        @keyframes lightning-flash {
+          0%, 100% { 
+            background: rgba(255, 255, 255, 0); 
+          }
+          50% { 
+            background: rgba(255, 255, 255, 0.3); 
+          }
         }
         .animate-shine {
           animation: shine 2s ease-in-out;
         }
-        .weather-icon-container {
-          position: relative;
-          width: 150px;
-          height: 150px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+        .animate-fade-in {
+          animation: fade-in 0.8s ease-out;
+        }
+        .lightning-flash {
+          animation: lightning-flash 2s ease-in-out infinite;
         }
       `}</style>
+    </div>
+  );
+}
+
+function WeatherPreview({ icon, label, gradient, delay, effect }) {
+  return (
+    <div 
+      className="relative overflow-hidden rounded-2xl aspect-square group cursor-pointer"
+      style={{ animationDelay: delay }}
+    >
+      {/* Background gradient */}
+      <div className={`absolute inset-0 bg-gradient-to-br ${gradient} transition-transform duration-500 group-hover:scale-110`}>
+        {/* Weather effects */}
+        {effect === 'rain' && (
+          <div className="absolute inset-0">
+            {[...Array(8)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute w-0.5 h-4 bg-white/30"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  animation: `fall-mini 1s linear infinite`,
+                  animationDelay: `${Math.random() * 1}s`,
+                }}
+              />
+            ))}
+          </div>
+        )}
+        
+        {effect === 'snow' && (
+          <div className="absolute inset-0">
+            {[...Array(6)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute text-white/60 text-xs"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  animation: `fall-snow-mini 3s linear infinite`,
+                  animationDelay: `${Math.random() * 3}s`,
+                }}
+              >
+                ❄
+              </div>
+            ))}
+          </div>
+        )}
+        
+        {effect === 'lightning' && (
+          <div className="absolute inset-0 lightning-flash" />
+        )}
+      </div>
+
+      {/* Icon and label */}
+      <div className="relative h-full flex flex-col items-center justify-center p-3 text-center">
+        <span className="text-4xl md:text-5xl mb-2 group-hover:scale-125 transition-transform duration-300">
+          {icon}
+        </span>
+        <span className="text-white text-xs md:text-sm font-medium drop-shadow-lg">
+          {label}
+        </span>
+      </div>
+
+      {/* Hover border effect */}
+      <div className="absolute inset-0 border-2 border-white/0 group-hover:border-white/30 rounded-2xl transition-colors duration-300" />
     </div>
   );
 }
