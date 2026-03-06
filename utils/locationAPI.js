@@ -88,17 +88,5 @@ export async function getCurrentLocation() {
  * @param {number} longitude 
  * @returns {Promise<Object>} Location info
  */
-export async function reverseGeocode(latitude, longitude) {
-  // Open-Meteo doesn't have reverse geocoding, so we'll use a simple approach
-  // You could integrate with another service if needed
-  
-  // For now, we'll just return the coordinates with a placeholder name
-  // In production, you might want to use a reverse geocoding service
-  return {
-    latitude,
-    longitude,
-    displayName: `Location (${latitude.toFixed(4)}, ${longitude.toFixed(4)})`,
-    name: 'Current Location',
-    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-  };
-}
+
+//Add a function to reverse geocode coordinates to a location name using the same API
