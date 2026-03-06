@@ -52,6 +52,7 @@ export async function getWeatherData(latitude, longitude, timezone = 'auto') {
     forecast_days: 16,
   });
 
+  //Make the API request with the following parameters
   const response = await fetch(`${BASE_URL}/forecast?${params}`);
   
   if (!response.ok) {
@@ -66,6 +67,8 @@ export async function getWeatherData(latitude, longitude, timezone = 'auto') {
  * @param {number} code - WMO weather code
  * @returns {Object} Weather info
  */
+
+//Match the WMO weather code to the corresponding description.
 export function getWeatherInfo(code) {
   const weatherMap = {
     0: { description: 'Clear sky', category: 'clear', icon: '☀️' },
@@ -119,7 +122,7 @@ export function getWindDirection(degrees) {
  */
 export function formatTime(isoString) {
   const date = new Date(isoString);
-  return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+  return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
 }
 
 /**
