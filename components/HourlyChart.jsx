@@ -62,10 +62,22 @@ export default function HourlyChart({ hourlyData, currentTemp }) {
 
   return (
     <div className="w-full">
+      {/* Min/Max Temperature Display */}
+      <div className="flex items-center justify-between mb-3 px-4 text-sm">
+        <div className="flex items-center gap-2">
+          <span className="text-blue-400 font-medium">Low:</span>
+          <span className="text-white font-bold">{Math.round(minTemp)}°</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-orange-400 font-medium">High:</span>
+          <span className="text-white font-bold">{Math.round(maxTemp)}°</span>
+        </div>
+      </div>
+
       {/* Temperature Icons */}
       <div className="flex justify-between mb-2 px-4">
         {hours.map((time, index) => {
-          if (index % 3 !== 0) return null; // Show every 3rd hour
+           if (index % 3 !== 0) return null
           const weatherInfo = getWeatherInfo(weatherCodes[index]);
           return (
             <div key={time} className="flex flex-col items-center gap-1">
@@ -108,7 +120,7 @@ export default function HourlyChart({ hourlyData, currentTemp }) {
 
           {/* Data points */}
           {points.map((point, index) => {
-            const isCurrent = index === 0;
+            const isCurrent = points.temperature === currentTemp;
             return (
               <g key={index}>
                 <circle
@@ -127,8 +139,8 @@ export default function HourlyChart({ hourlyData, currentTemp }) {
 
       {/* Time labels */}
       <div className="flex justify-between mt-3 px-4 text-slate-400 text-sm">
-        {hours.map((time, index) => {
-          if (index % 3 !== 0) return null; // Show every 3rd hour
+        {hours.map((time,index) => {
+           if (index % 3 !== 0) return null
           return (
             <div key={time} className="text-center">
               {formatTime(time)}
