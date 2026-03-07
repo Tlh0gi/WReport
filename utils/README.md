@@ -949,5 +949,3 @@ To save new data (e.g., favorite locations):
 
 ---
 
-**Last Updated:** 2024  
-**For More Info:** See full API documentation in `docs/API.md`
